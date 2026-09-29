@@ -1,0 +1,26 @@
+{
+  "servers": [
+    {
+      "name": "time",
+      "transport": {"type": "stdio", "command": ["python", "-m", "eairt.mcp.refserver", "--stdio"]},
+      "timeout_s": 30,
+      "tools": {
+        "now":  {"write_class": "read"},
+        "echo": {"write_class": "read"}
+      }
+    },
+    {
+      "name": "sites",
+      "transport": {"type": "http", "url": "http://host.docker.internal:8765/mcp"},
+      "credential": {"env": "EAIRT_MCP_TOKEN_SITES"},
+      "timeout_s": 30,
+      "tools": {
+        "lookup_site": {
+          "write_class": "read",
+          "scope": {"tenant_id": "tenant_id"},
+          "redact": ["mac_address"]
+        }
+      }
+    }
+  ]
+}
